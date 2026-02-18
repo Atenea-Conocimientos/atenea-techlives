@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 QA Automation Adventure - Tech Live</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 50%, #0a0a1a 100%);
+            min-height: 100vh;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, #8B5CF6, #06B6D4, #8B5CF6);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient 3s ease infinite;
+            margin-bottom: 10px;
+        }
+
+        @keyframes gradient {
+            0%, 100% { background-position: 0% center; }
+            50% { background-position: 200% center; }
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            font-size: 1.1rem;
+        }
+
+        .progress-bar {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            height: 8px;
+            margin: 30px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #8B5CF6, #06B6D4);
+            border-radius: 20px;
+            transition: width 0.5s ease;
+        }
+
+        .scenario-card {
+            background: rgba(30, 30, 60, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .scenario-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .scenario-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #8B5CF6, #06B6D4);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+
+        .scenario-meta {
+            flex: 1;
+        }
+
+        .scenario-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(139, 92, 246, 0.2);
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #a78bfa;
+            margin-bottom: 5px;
+        }
+
+        .scenario-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .scenario-description {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #cbd5e1;
+            padding: 25px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            border-left: 4px solid #8B5CF6;
+            margin-bottom: 30px;
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 15px;
+        }
+
+        .option-btn {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .option-btn:hover {
+            background: rgba(139, 92, 246, 0.1);
+            border-color: rgba(139, 92, 246, 0.5);
+            transform: translateX(5px);
+        }
+
+        .option-btn.selected {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: #8B5CF6;
+        }
+
+        .option-letter {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #8B5CF6, #7c3aed);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .option-text {
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #e2e8f0;
+        }
+
+        .result-card {
+            display: none;
+            background: rgba(30, 30, 60, 0.8);
+            border: 2px solid;
+            border-radius: 16px;
+            padding: 25px;
+            margin-top: 20px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .result-card.good {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .result-card.medium {
+            border-color: #f59e0b;
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        .result-card.risky {
+            border-color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+
+        .result-card.good .result-header { color: #10b981; }
+        .result-card.medium .result-header { color: #f59e0b; }
+        .result-card.risky .result-header { color: #ef4444; }
+
+        .result-text {
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .nav-btn {
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .nav-btn.secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #e2e8f0;
+        }
+
+        .nav-btn.secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-btn.primary {
+            background: linear-gradient(90deg, #8B5CF6, #06B6D4);
+            color: white;
+        }
+
+        .nav-btn.primary:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(139, 92, 246, 0.4);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .stats-bar {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .stat-icon {
+            font-size: 1.2rem;
+        }
+
+        .stat-value {
+            font-weight: 700;
+            color: #8B5CF6;
+        }
+
+        .finale-card {
+            text-align: center;
+            padding: 60px 40px;
+        }
+
+        .finale-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        .finale-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            background: linear-gradient(90deg, #8B5CF6, #06B6D4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .finale-subtitle {
+            color: #94a3b8;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .score-display {
+            font-size: 4rem;
+            font-weight: 800;
+            color: #8B5CF6;
+            margin: 20px 0;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8rem; }
+            .scenario-card { padding: 25px; }
+            .option-btn { padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 QA Automation Adventure</h1>
+            <p class="subtitle">Tu primer día en un proyecto real de automatización</p>
+        </header>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress" style="width: 0%"></div>
+        </div>
+
+        <div id="game-container">
+            <!-- Scenarios will be rendered here -->
+        </div>
+
+        <div class="stats-bar" id="stats-bar">
+            <div class="stat">
+                <span class="stat-icon">📍</span>
+                <span>Escenario: <span class="stat-value" id="current-scenario">1</span>/10</span>
+            </div>
+            <div class="stat">
+                <span class="stat-icon">⭐</span>
+                <span>Puntos: <span class="stat-value" id="score">0</span></span>
+            </div>
+            <div class="stat">
+                <span class="stat-icon">🎯</span>
+                <span>Decisiones: <span class="stat-value" id="decisions">0</span></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const scenarios = [
+            {
+                id: 1,
+                icon: "🚀",
+                tag: "DÍA 1",
+                title: "El Onboarding",
+                description: "Llegás a tu primer día en un proyecto nuevo de e-commerce. El PM te dice: 'Tenemos un repo con 200 tests automatizados, pero hace meses que nadie los toca. Necesitamos que te hagas cargo. Arrancá cuando puedas.' No hay documentación, no hay wiki, y el QA anterior ya no está.",
+                options: [
+                    { text: "Empezar a correr los tests inmediatamente para ver cuántos pasan", result: "medium", feedback: "Es tentador, pero sin contexto vas a perder tiempo interpretando errores que quizás ni son reales. Mejor primero entender qué hay." },
+                    { text: "Pedir una reunión con el dev más antiguo para entender la arquitectura", result: "good", feedback: "¡Excelente! Entender el sistema primero te va a ahorrar días de confusión. El conocimiento tribal es oro." },
+                    { text: "Revisar el código de los tests para entender qué cubren", result: "good", feedback: "Muy bien. Leer el código te da contexto sobre qué se consideró importante automatizar y cómo está estructurado." },
+                    { text: "Pedirle al PM un documento con los casos de prueba prioritarios", result: "medium", feedback: "Buena intención, pero si no hay documentación, probablemente esto no exista. Vas a esperar algo que nunca llega." }
+                ]
+            },
+            {
+                id: 2,
+                icon: "🔴",
+                tag: "SEMANA 1",
+                title: "El Pipeline Rojo",
+                description: "Corriste los tests por primera vez. De 200, solo pasan 89. El pipeline está rojo desde hace 3 meses (nadie lo miraba). El PM pregunta: '¿Para cuándo lo tenemos en verde?'",
+                options: [
+                    { text: "Skipear los tests que fallan para poner el pipeline en verde rápido", result: "risky", feedback: "⚠️ Peligroso. Estás ocultando el problema, no resolviéndolo. Además, ¿cómo sabés cuáles son importantes?" },
+                    { text: "Analizar los fallos y categorizarlos: bugs reales, tests flaky, ambiente, obsoletos", result: "good", feedback: "¡Perfecto! Categorizar te permite priorizar y comunicar el estado real al equipo." },
+                    { text: "Decir que necesitás 2 meses para arreglar todo", result: "medium", feedback: "Honesto, pero sin análisis previo es un número inventado. Mejor primero entender el alcance." },
+                    { text: "Preguntar qué tests son críticos para el negocio y enfocarte solo en esos", result: "good", feedback: "Excelente approach pragmático. El 20% de los tests probablemente cubren el 80% del valor." }
+                ]
+            },
+            {
+                id: 3,
+                icon: "😤",
+                tag: "CONFLICTO",
+                title: "El Dev Resistente",
+                description: "Necesitás agregar data-testid a un botón de checkout para estabilizar un test. El dev senior te dice: 'No voy a ensuciar mi código con atributos de testing. Usá XPath o lo que sea.'",
+                options: [
+                    { text: "Usar XPath como dice y seguir adelante", result: "medium", feedback: "Funciona por ahora, pero los XPaths son frágiles. Vas a pagar esta deuda técnica después." },
+                    { text: "Escalar al PM para que obligue al dev", result: "risky", feedback: "Puede funcionar pero quemás la relación. Los devs resentidos no colaboran." },
+                    { text: "Explicarle los beneficios: menos tests flaky, menos bugs en prod, menos interrupciones para él", result: "good", feedback: "¡Clave! Enmarcarlo en términos de SU beneficio cambia la conversación." },
+                    { text: "Proponer una convención de equipo y presentarla en la retro", result: "good", feedback: "Jugada de largo plazo inteligente. Si es decisión del equipo, no es 'tu capricho'." }
+                ]
+            },
+            {
+                id: 4,
+                icon: "⏰",
+                tag: "PRESIÓN",
+                title: "El Deadline Imposible",
+                description: "El PM te dice: 'Tenemos un release crítico en 2 semanas. Necesito que automatices estos 50 casos de prueba.' Sabés que hacerlo bien toma mínimo 6 semanas.",
+                options: [
+                    { text: "Decir que sí y trabajar 12 horas por día para cumplir", result: "risky", feedback: "El burnout no es estrategia. Y los tests hechos apurados van a ser un problema después." },
+                    { text: "Decir que es imposible y que no lo vas a hacer", result: "medium", feedback: "Honesto pero no ayuda. No estás ofreciendo alternativas." },
+                    { text: "Proponer automatizar solo los 10 casos más críticos y el resto como smoke manual", result: "good", feedback: "¡Perfecto! Priorizás valor, sos realista, y ofrecés una solución viable." },
+                    { text: "Pedir que muevan el release", result: "risky", feedback: "Raramente es opción. El negocio manda. Mejor adaptarte y proponer alternativas." }
+                ]
+            },
+            {
+                id: 5,
+                icon: "👻",
+                tag: "MISTERIO",
+                title: "El Test Flaky",
+                description: "Hay un test que pasa 7 de cada 10 veces. A veces falla por timeout, a veces por elemento no encontrado. Lleva así 2 semanas y está bloqueando el pipeline.",
+                options: [
+                    { text: "Agregar más waits y retries hasta que pase", result: "medium", feedback: "Parche sobre parche. Puede funcionar pero no resuelve la causa raíz y hace el test más lento." },
+                    { text: "Correr el test 20 veces seguidas localmente y analizar el patrón de fallos", result: "good", feedback: "¡Excelente debugging! Los patrones te dicen si es timing, data, o ambiente." },
+                    { text: "Deshabilitarlo temporalmente y crear un ticket para investigar después", result: "medium", feedback: "A veces es lo pragmático, pero 'después' suele ser 'nunca'. Al menos documentalo bien." },
+                    { text: "Revisar si el test depende de data específica o estado de otro test", result: "good", feedback: "Muy bien. Los tests dependientes son la causa #1 de flakiness." }
+                ]
+            },
+            {
+                id: 6,
+                icon: "🤖",
+                tag: "IA",
+                title: "El Junior y ChatGPT",
+                description: "Un junior del equipo genera todos sus tests con ChatGPT y los commitea directamente. Algunos funcionan, otros tienen errores obvios, y ninguno sigue los patrones del proyecto.",
+                options: [
+                    { text: "Prohibirle usar IA para generar código", result: "risky", feedback: "Vas contra la corriente. La IA es una herramienta; el problema es cómo la usa, no que la use." },
+                    { text: "Hacer pair programming para mostrarle cómo revisar y adaptar el código generado", result: "good", feedback: "¡Perfecto! Le enseñás a usar la IA como asistente, no como reemplazo de su criterio." },
+                    { text: "Configurar reglas de linting más estrictas para que el CI rechace código malo", result: "medium", feedback: "Ayuda, pero no resuelve el problema de fondo. Va a seguir commiteando y fallando." },
+                    { text: "Crear una guía de 'Cómo usar IA para testing' con ejemplos buenos y malos", result: "good", feedback: "Escalás la solución al equipo. Excelente pensamiento de líder técnico." }
+                ]
+            },
+            {
+                id: 7,
+                icon: "📊",
+                tag: "POLÍTICA",
+                title: "El 100% Coverage",
+                description: "El cliente exige '100% de cobertura de automatización' como requisito contractual. Vos sabés que automatizar todo no tiene sentido y algunos tests manuales son más eficientes.",
+                options: [
+                    { text: "Automatizar todo aunque no tenga sentido, es lo que pide el cliente", result: "risky", feedback: "Vas a gastar recursos en tests de bajo valor y el mantenimiento va a ser una pesadilla." },
+                    { text: "Explicar que 100% no es un objetivo realista ni deseable", result: "medium", feedback: "Correcto pero puede sonar como excusa. Necesitás datos y alternativas." },
+                    { text: "Proponer una métrica diferente: cobertura de riesgo o de flujos críticos", result: "good", feedback: "¡Excelente! Cambiás la conversación de cantidad a valor. Esto es consultoría real." },
+                    { text: "Mostrar el ROI de automatizar solo el 70% crítico vs el 100%", result: "good", feedback: "Los números convencen. Si podés demostrar que 70% da el 95% del valor, ganaste." }
+                ]
+            },
+            {
+                id: 8,
+                icon: "🔥",
+                tag: "CRISIS",
+                title: "El Ambiente Caído",
+                description: "Es lunes 9am. Tenés que correr la regresión completa. El ambiente de QA no levanta. Nadie de infra responde. El release es el miércoles y el PM está nervioso.",
+                options: [
+                    { text: "Esperar a que infra responda y escalar si no lo hacen", result: "medium", feedback: "Pasivo. Mientras esperás, perdés tiempo valioso." },
+                    { text: "Intentar levantar el ambiente vos mismo mirando los logs", result: "medium", feedback: "Admirable pero arriesgado. Podés romper más cosas si no es tu área." },
+                    { text: "Correr los tests contra otro ambiente (staging/dev) documentando las diferencias", result: "good", feedback: "¡Pragmático! No es ideal pero tenés resultados parciales mientras se resuelve." },
+                    { text: "Preparar un plan B: smoke manual de los flujos críticos", result: "good", feedback: "Siempre tener plan B. Si la automatización falla, el testing no puede parar." }
+                ]
+            },
+            {
+                id: 9,
+                icon: "🎯",
+                tag: "ESTRATEGIA",
+                title: "API vs UI",
+                description: "Te piden automatizar el flujo completo de compra. Podrías hacerlo todo por UI (como lo hace el usuario) o usar API para el setup y solo UI para lo crítico.",
+                options: [
+                    { text: "Todo por UI porque así es como lo usa el cliente real", result: "medium", feedback: "Lógico pero lento y frágil. Los tests E2E puros son costosos de mantener." },
+                    { text: "Todo por API porque es más rápido y estable", result: "medium", feedback: "Rápido sí, pero te perdés bugs de UI que son los que ve el usuario." },
+                    { text: "Híbrido: API para crear usuario/productos, UI solo para el checkout", result: "good", feedback: "¡La pirámide de testing en acción! Rápido, estable, y cubrís lo importante." },
+                    { text: "Depende del objetivo del test - preguntarle al PM qué quiere validar", result: "good", feedback: "Muy maduro. El approach técnico depende del objetivo de negocio." }
+                ]
+            },
+            {
+                id: 10,
+                icon: "🏆",
+                tag: "FINAL",
+                title: "La Retrospectiva",
+                description: "Pasaron 3 meses. Lograste estabilizar el pipeline, el equipo confía en los tests, y el PM está contento. Te preguntan: '¿Qué fue lo más importante que hiciste?'",
+                options: [
+                    { text: "Arreglar los tests que estaban rotos", result: "medium", feedback: "Importante pero es el síntoma, no la causa." },
+                    { text: "Establecer confianza en la suite - que cuando falla, es real", result: "good", feedback: "¡Esto es oro! Un pipeline en el que nadie confía no sirve de nada." },
+                    { text: "Documentar todo para que el próximo QA no empiece de cero", result: "good", feedback: "Pensamiento de largo plazo. El conocimiento institucional es invaluable." },
+                    { text: "Convencer al equipo de que testing es responsabilidad de todos", result: "good", feedback: "¡El cambio cultural! Esto es lo que separa un QA de un líder técnico." }
+                ]
+            }
+        ];
+
+        let currentScenario = 0;
+        let score = 0;
+        let decisions = 0;
+        let selectedOption = null;
+
+        function renderScenario() {
+            const container = document.getElementById('game-container');
+            const scenario = scenarios[currentScenario];
+            
+            if (!scenario) {
+                renderFinale();
+                return;
+            }
+
+            const progress = ((currentScenario) / scenarios.length) * 100;
+            document.getElementById('progress').style.width = `${progress}%`;
+            document.getElementById('current-scenario').textContent = currentScenario + 1;
+
+            container.innerHTML = `
+                <div class="scenario-card">
+                    <div class="scenario-header">
+                        <div class="scenario-icon">${scenario.icon}</div>
+                        <div class="scenario-meta">
+                            <span class="scenario-tag">${scenario.tag}</span>
+                            <h2 class="scenario-title">${scenario.title}</h2>
+                        </div>
+                    </div>
+                    
+                    <div class="scenario-description">
+                        ${scenario.description}
+                    </div>
+
+                    <div class="options-grid">
+                        ${scenario.options.map((opt, i) => `
+                            <button class="option-btn" onclick="selectOption(${i})">
+                                <span class="option-letter">${String.fromCharCode(65 + i)}</span>
+                                <span class="option-text">${opt.text}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+
+                    <div class="result-card" id="result-card">
+                        <div class="result-header">
+                            <span id="result-icon"></span>
+                            <span id="result-title"></span>
+                        </div>
+                        <p class="result-text" id="result-text"></p>
+                    </div>
+
+                    <div class="nav-buttons">
+                        <button class="nav-btn secondary" onclick="previousScenario()" ${currentScenario === 0 ? 'disabled' : ''}>
+                            ← Anterior
+                        </button>
+                        <button class="nav-btn primary" onclick="nextScenario()" id="next-btn" disabled>
+                            Siguiente →
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            selectedOption = null;
+        }
+
+        function selectOption(index) {
+            const scenario = scenarios[currentScenario];
+            const option = scenario.options[index];
+            
+            // Update UI
+            document.querySelectorAll('.option-btn').forEach((btn, i) => {
+                btn.classList.toggle('selected', i === index);
+            });
+
+            // Show result
+            const resultCard = document.getElementById('result-card');
+            const resultIcon = document.getElementById('result-icon');
+            const resultTitle = document.getElementById('result-title');
+            const resultText = document.getElementById('result-text');
+
+            resultCard.className = 'result-card ' + option.result;
+            resultCard.style.display = 'block';
+
+            if (option.result === 'good') {
+                resultIcon.textContent = '✅';
+                resultTitle.textContent = 'Excelente decisión';
+                if (selectedOption === null) score += 10;
+            } else if (option.result === 'medium') {
+                resultIcon.textContent = '⚠️';
+                resultTitle.textContent = 'Puede funcionar, pero...';
+                if (selectedOption === null) score += 5;
+            } else {
+                resultIcon.textContent = '❌';
+                resultTitle.textContent = 'Cuidado con esto';
+                if (selectedOption === null) score += 0;
+            }
+
+            resultText.textContent = option.feedback;
+            
+            if (selectedOption === null) {
+                decisions++;
+                document.getElementById('decisions').textContent = decisions;
+            }
+            
+            selectedOption = index;
+            document.getElementById('score').textContent = score;
+            document.getElementById('next-btn').disabled = false;
+        }
+
+        function nextScenario() {
+            currentScenario++;
+            renderScenario();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function previousScenario() {
+            if (currentScenario > 0) {
+                currentScenario--;
+                renderScenario();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function renderFinale() {
+            const container = document.getElementById('game-container');
+            const maxScore = scenarios.length * 10;
+            const percentage = Math.round((score / maxScore) * 100);
+            
+            document.getElementById('progress').style.width = '100%';
+            document.getElementById('stats-bar').classList.add('hidden');
+
+            let title, subtitle, icon;
+            if (percentage >= 80) {
+                icon = '🏆';
+                title = '¡QA Automation Senior!';
+                subtitle = 'Tomás decisiones excelentes. Estás listo para liderar.';
+            } else if (percentage >= 60) {
+                icon = '⭐';
+                title = 'QA Automation Sólido';
+                subtitle = 'Buenas decisiones en general. Seguí puliendo los edge cases.';
+            } else {
+                icon = '📚';
+                title = 'En Camino';
+                subtitle = 'Hay oportunidades de mejora. ¡Pero así se aprende!';
+            }
+
+            container.innerHTML = `
+                <div class="scenario-card finale-card">
+                    <div class="finale-icon">${icon}</div>
+                    <h2 class="finale-title">${title}</h2>
+                    <p class="finale-subtitle">${subtitle}</p>
+                    <div class="score-display">${score}/${maxScore}</div>
+                    <p style="color: #94a3b8; margin-bottom: 30px;">Puntos obtenidos</p>
+                    <button class="nav-btn primary" onclick="restart()">
+                        🔄 Jugar de nuevo
+                    </button>
+                </div>
+            `;
+        }
+
+        function restart() {
+            currentScenario = 0;
+            score = 0;
+            decisions = 0;
+            document.getElementById('stats-bar').classList.remove('hidden');
+            document.getElementById('score').textContent = '0';
+            document.getElementById('decisions').textContent = '0';
+            renderScenario();
+        }
+
+        // Start the game
+        renderScenario();
+    </script>
+</body>
+</html>

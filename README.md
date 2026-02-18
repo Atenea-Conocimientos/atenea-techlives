@@ -16,7 +16,7 @@ tech-live-6/    # Tech Live #6 - [Tema]
 
 | # | Tema | Fecha | Carpeta |
 |---|------|-------|---------|
-| 5 | TBD | TBD | [`tech-live-5/`](./tech-live-5/) |
+| 5 | QA Automation Adventure 🎮 | TBD | [`tech-live-5/`](./tech-live-5/) |
 
 ## 🔗 Links
 
