@@ -531,8 +531,82 @@
                 ]
             },
 
-            // ── RETROSPECTIVA — (próximamente) ────────────────────────────
-            // Athenix: pegá los escenarios de Retrospectiva acá ↓
+            // ── RETROSPECTIVA ──────────────────────────────────────────────
+            {
+                id: 7,
+                icon: "🔄",
+                tag: "RETROSPECTIVA",
+                title: "El Silencio Incómodo",
+                description: "Preguntás '¿Qué podríamos mejorar?' y nadie dice nada. Pasan 30 segundos eternos. Sabés que hubo problemas en el sprint, pero nadie quiere hablar. ¿Qué hacés?",
+                options: [
+                    {
+                        text: "Usás una técnica anónima: post-its o Miro donde cada uno escribe sin identificarse",
+                        result: "good",
+                        feedback: "Aparecen 12 post-its con feedback real. Sin la presión de hablar en público, el equipo se abre. Descubrís que hay tensión entre dos devs."
+                    },
+                    {
+                        text: "Empezás vos: 'Yo creo que el deploy del jueves fue un desastre...'",
+                        result: "medium",
+                        feedback: "Rompiste el hielo, pero ahora todos siguen tu tema. Otros problemas importantes quedaron sin discutir."
+                    },
+                    {
+                        text: "Cerrás la retro: 'Bueno, si no hay nada, seguimos igual'",
+                        result: "risky",
+                        feedback: "Los problemas no desaparecen por ignorarlos. El próximo sprint tendrás los mismos issues... o peores."
+                    }
+                ]
+            },
+            {
+                id: 8,
+                icon: "😤",
+                tag: "RETROSPECTIVA",
+                title: "La Queja Eterna",
+                description: "Carlos usa la retro para quejarse de lo mismo de siempre: 'Los requisitos nunca están claros'. Es la quinta retro consecutiva con el mismo tema, pero nada cambia. ¿Cómo lo manejás?",
+                options: [
+                    {
+                        text: "'Carlos, definamos una acción concreta: ¿qué experimento podemos hacer este sprint para mejorar esto?'",
+                        result: "good",
+                        feedback: "Acuerdan que el PO agregará criterios de aceptación antes del refinement. Carlos se siente escuchado Y hay un plan de acción."
+                    },
+                    {
+                        text: "'Ya lo discutimos 5 veces, pasemos a otro tema'",
+                        result: "risky",
+                        feedback: "Carlos se cierra. El resto del equipo piensa: '¿Para qué hablar si no sirve de nada?'. Las próximas retros serán más silenciosas."
+                    },
+                    {
+                        text: "Lo dejás desahogarse 15 minutos y seguís con la agenda",
+                        result: "medium",
+                        feedback: "Carlos se siente escuchado pero nada cambia. La queja volverá el próximo sprint. El equipo pierde fe en las retros."
+                    }
+                ]
+            },
+            {
+                id: 9,
+                icon: "🎭",
+                tag: "RETROSPECTIVA",
+                title: "El Elefante en la Sala",
+                description: "Todos saben que el problema del sprint fue Juan, el dev senior que no entregó su parte a tiempo. Pero nadie lo dice porque le tienen respeto (o miedo). ¿Cómo abordás el tema?",
+                options: [
+                    {
+                        text: "Hablás con Juan en privado antes de la retro: '¿Pasó algo este sprint? ¿Necesitás apoyo?'",
+                        result: "good",
+                        feedback: "Juan confiesa que está sobrecargado con 3 proyectos. En la retro, él mismo propone redistribuir carga. El equipo lo respeta más."
+                    },
+                    {
+                        text: "Lo exponés en la retro: 'El problema fue que Juan no entregó a tiempo'",
+                        result: "risky",
+                        feedback: "Juan se pone a la defensiva y culpa a otros. La retro se convierte en un juicio público. La confianza del equipo se rompe."
+                    },
+                    {
+                        text: "Abordás el síntoma sin nombrar a nadie: 'Tuvimos dependencias bloqueantes...'",
+                        result: "medium",
+                        feedback: "Todos saben de quién hablás pero nadie lo dice. El problema real no se resuelve y volverá."
+                    }
+                ]
+            },
+
+            // ── SPRINT REVIEW — (próximamente) ────────────────────────────
+            // Athenix: pegá los escenarios de Sprint Review acá ↓
         ];
 
         // ── Engine ─────────────────────────────────────────────────────────
