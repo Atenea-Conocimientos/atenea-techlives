@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 Agile Ceremonies Simulator - Tech Live #6</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #0f1f2a 50%, #0a0a1a 100%);
+            min-height: 100vh;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, #06B6D4, #3B82F6, #06B6D4);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient 3s ease infinite;
+            margin-bottom: 10px;
+        }
+
+        @keyframes gradient {
+            0%, 100% { background-position: 0% center; }
+            50% { background-position: 200% center; }
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            font-size: 1.1rem;
+        }
+
+        .progress-bar {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            height: 8px;
+            margin: 30px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #06B6D4, #3B82F6);
+            border-radius: 20px;
+            transition: width 0.5s ease;
+        }
+
+        .ceremony-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        .ceremony-badge.daily     { background: rgba(6,182,212,0.15); border: 1px solid rgba(6,182,212,0.4); color: #22d3ee; }
+        .ceremony-badge.planning  { background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.4); color: #60a5fa; }
+        .ceremony-badge.retro     { background: rgba(168,85,247,0.15); border: 1px solid rgba(168,85,247,0.4); color: #c084fc; }
+        .ceremony-badge.review    { background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.4); color: #34d399; }
+        .ceremony-badge.refinement{ background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.4); color: #fbbf24; }
+
+        .scenario-card {
+            background: rgba(15, 25, 40, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(6, 182, 212, 0.25);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .scenario-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .scenario-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #06B6D4, #3B82F6);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            flex-shrink: 0;
+        }
+
+        .scenario-meta {
+            flex: 1;
+        }
+
+        .scenario-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(6, 182, 212, 0.15);
+            border: 1px solid rgba(6, 182, 212, 0.35);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #22d3ee;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .scenario-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .scenario-description {
+            font-size: 1.05rem;
+            line-height: 1.75;
+            color: #cbd5e1;
+            padding: 25px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            border-left: 4px solid #06B6D4;
+            margin-bottom: 30px;
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 15px;
+        }
+
+        .option-btn {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            width: 100%;
+        }
+
+        .option-btn:hover {
+            background: rgba(6, 182, 212, 0.08);
+            border-color: rgba(6, 182, 212, 0.45);
+            transform: translateX(5px);
+        }
+
+        .option-btn.selected {
+            background: rgba(6, 182, 212, 0.15);
+            border-color: #06B6D4;
+        }
+
+        .option-letter {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #06B6D4, #3B82F6);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            flex-shrink: 0;
+            color: #fff;
+        }
+
+        .option-text {
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #e2e8f0;
+            padding-top: 6px;
+        }
+
+        .result-card {
+            display: none;
+            background: rgba(30, 30, 60, 0.8);
+            border: 2px solid;
+            border-radius: 16px;
+            padding: 25px;
+            margin-top: 20px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .result-card.good   { border-color: #10b981; background: rgba(16, 185, 129, 0.1); }
+        .result-card.medium { border-color: #f59e0b; background: rgba(245, 158, 11, 0.1); }
+        .result-card.risky  { border-color: #ef4444; background: rgba(239, 68, 68, 0.1); }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+        }
+
+        .result-card.good   .result-header { color: #10b981; }
+        .result-card.medium .result-header { color: #f59e0b; }
+        .result-card.risky  .result-header { color: #ef4444; }
+
+        .result-text {
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .nav-btn {
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .nav-btn.secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: #e2e8f0;
+        }
+
+        .nav-btn.secondary:hover { background: rgba(255, 255, 255, 0.15); }
+
+        .nav-btn.primary {
+            background: linear-gradient(90deg, #06B6D4, #3B82F6);
+            color: white;
+        }
+
+        .nav-btn.primary:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(6, 182, 212, 0.4);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .stats-bar {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            font-size: 0.95rem;
+        }
+
+        .stat-value {
+            font-weight: 700;
+            color: #06B6D4;
+        }
+
+        .section-divider {
+            text-align: center;
+            margin: 10px 0 30px;
+            padding: 16px 24px;
+            background: rgba(6, 182, 212, 0.07);
+            border: 1px dashed rgba(6, 182, 212, 0.3);
+            border-radius: 12px;
+            color: #94a3b8;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .finale-card {
+            text-align: center;
+            padding: 60px 40px;
+        }
+
+        .finale-icon { font-size: 80px; margin-bottom: 20px; }
+
+        .finale-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            background: linear-gradient(90deg, #06B6D4, #3B82F6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .finale-subtitle {
+            color: #94a3b8;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .score-display {
+            font-size: 4rem;
+            font-weight: 800;
+            color: #06B6D4;
+            margin: 20px 0;
+        }
+
+        .hidden { display: none; }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8rem; }
+            .scenario-card { padding: 22px; }
+            .option-btn { padding: 14px; }
+            .nav-btn { padding: 12px 18px; font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 Agile Ceremonies Simulator</h1>
+            <p class="subtitle">¿Podés navegar las ceremonias sin romper el equipo?</p>
+        </header>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress" style="width: 0%"></div>
+        </div>
+
+        <div id="game-container"></div>
+
+        <div class="stats-bar" id="stats-bar">
+            <div class="stat">
+                <span>📍</span>
+                <span>Escenario: <span class="stat-value" id="current-scenario">1</span>/<span id="total-scenarios">?</span></span>
+            </div>
+            <div class="stat">
+                <span>⭐</span>
+                <span>Puntos: <span class="stat-value" id="score">0</span></span>
+            </div>
+            <div class="stat">
+                <span>🎯</span>
+                <span>Decisiones: <span class="stat-value" id="decisions">0</span></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const scenarios = [
+            // ── DAILY STANDUP ──────────────────────────────────────────────
+            {
+                id: 1,
+                icon: "🗣️",
+                tag: "DAILY STANDUP",
+                title: "El Monólogo Infinito",
+                description: "Es lunes 9:15 AM. El daily debería durar 15 minutos, pero Diego lleva 8 minutos explicando cada línea de código que tocó el viernes. El equipo empieza a mirar el reloj. Como Scrum Master, ¿qué hacés?",
+                options: [
+                    {
+                        text: "Interrumpís amablemente: 'Diego, ¿podemos agendar una sesión después para los detalles técnicos?'",
+                        result: "good",
+                        feedback: "Perfecto. Respetaste el timebox sin humillar a Diego. El daily vuelve a fluir y el equipo te lo agradece."
+                    },
+                    {
+                        text: "Dejás que termine para no ser grosero",
+                        result: "risky",
+                        feedback: "El daily se extendió a 35 minutos. Dos personas tenían reuniones y se fueron frustradas. El equipo empieza a odiar los dailies."
+                    },
+                    {
+                        text: "Le cortás en seco: 'Diego, next.'",
+                        result: "medium",
+                        feedback: "Cumpliste el timebox, pero Diego se sintió avergonzado frente al equipo. La próxima vez no va a querer compartir sus bloqueos."
+                    }
+                ]
+            },
+            {
+                id: 2,
+                icon: "🚨",
+                tag: "DAILY STANDUP",
+                title: "El Bloqueo Oculto",
+                description: "Lucía dice 'Todo bien, sigo con lo mismo de ayer'. Pero notás que lleva 3 días en la misma tarea y evita dar detalles. ¿Cómo manejás la situación?",
+                options: [
+                    {
+                        text: "Después del daily, te acercás en privado: '¿Lucía, necesitás una mano con algo?'",
+                        result: "good",
+                        feedback: "Lucía confiesa que está trabada con una API externa y no sabía cómo pedir ayuda. Resuelven juntos en 30 min lo que hubiera tardado 2 días más."
+                    },
+                    {
+                        text: "La exponés en el daily: '¿Por qué llevás 3 días en eso?'",
+                        result: "risky",
+                        feedback: "Lucía se pone a la defensiva. El resto del equipo toma nota: mejor no mostrar vulnerabilidad en este equipo."
+                    },
+                    {
+                        text: "No decís nada, ya lo resolverá sola",
+                        result: "medium",
+                        feedback: "Al final del sprint, la tarea sigue sin terminar. El compromiso del equipo se ve afectado."
+                    }
+                ]
+            },
+            {
+                id: 3,
+                icon: "📱",
+                tag: "DAILY STANDUP",
+                title: "El Multitasker",
+                description: "Notás que Martín siempre está mirando el celular durante el daily y nunca presta atención a lo que dicen los demás. Solo habla cuando es su turno. ¿Qué hacés?",
+                options: [
+                    {
+                        text: "Implementás 'standing daily' — todos parados, celulares en la mesa",
+                        result: "good",
+                        feedback: "El daily se vuelve más dinámico y corto. Martín empieza a escuchar y hasta ofrece ayuda a un compañero."
+                    },
+                    {
+                        text: "Lo llamás al frente del equipo: '¿Martín, algo más interesante en el celu?'",
+                        result: "risky",
+                        feedback: "Generaste tensión innecesaria. Martín está resentido y el ambiente del daily se puso incómodo."
+                    },
+                    {
+                        text: "Lo ignorás, cada uno con sus hábitos",
+                        result: "medium",
+                        feedback: "Otros empiezan a copiar la conducta. Ahora nadie escucha a nadie y el daily perdió su propósito de sincronización."
+                    }
+                ]
+            },
+
+            // ── SPRINT PLANNING — (próximamente) ──────────────────────────
+            // Athenix: pegá los escenarios de Sprint Planning acá ↓
+        ];
+
+        // ── Engine ─────────────────────────────────────────────────────────
+        let currentScenario = 0;
+        let score = 0;
+        let decisions = 0;
+        let selectedOption = null;
+
+        document.getElementById('total-scenarios').textContent = scenarios.length;
+
+        function renderScenario() {
+            const container = document.getElementById('game-container');
+            const scenario = scenarios[currentScenario];
+
+            if (!scenario) { renderFinale(); return; }
+
+            const progress = (currentScenario / scenarios.length) * 100;
+            document.getElementById('progress').style.width = `${progress}%`;
+            document.getElementById('current-scenario').textContent = currentScenario + 1;
+
+            container.innerHTML = `
+                <div class="scenario-card">
+                    <div class="scenario-header">
+                        <div class="scenario-icon">${scenario.icon}</div>
+                        <div class="scenario-meta">
+                            <span class="scenario-tag">${scenario.tag}</span>
+                            <h2 class="scenario-title">${scenario.title}</h2>
+                        </div>
+                    </div>
+
+                    <div class="scenario-description">${scenario.description}</div>
+
+                    <div class="options-grid">
+                        ${scenario.options.map((opt, i) => `
+                            <button class="option-btn" onclick="selectOption(${i})">
+                                <span class="option-letter">${String.fromCharCode(65 + i)}</span>
+                                <span class="option-text">${opt.text}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+
+                    <div class="result-card" id="result-card">
+                        <div class="result-header">
+                            <span id="result-icon"></span>
+                            <span id="result-title"></span>
+                        </div>
+                        <p class="result-text" id="result-text"></p>
+                    </div>
+
+                    <div class="nav-buttons">
+                        <button class="nav-btn secondary" onclick="previousScenario()" ${currentScenario === 0 ? 'disabled' : ''}>
+                            ← Anterior
+                        </button>
+                        <button class="nav-btn primary" onclick="nextScenario()" id="next-btn" disabled>
+                            ${currentScenario === scenarios.length - 1 ? 'Ver resultado 🏆' : 'Siguiente →'}
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            selectedOption = null;
+        }
+
+        function selectOption(index) {
+            const option = scenarios[currentScenario].options[index];
+
+            document.querySelectorAll('.option-btn').forEach((btn, i) => {
+                btn.classList.toggle('selected', i === index);
+            });
+
+            const resultCard  = document.getElementById('result-card');
+            const resultIcon  = document.getElementById('result-icon');
+            const resultTitle = document.getElementById('result-title');
+            const resultText  = document.getElementById('result-text');
+
+            resultCard.className = 'result-card ' + option.result;
+            resultCard.style.display = 'block';
+
+            if (option.result === 'good') {
+                resultIcon.textContent  = '✅';
+                resultTitle.textContent = 'Excelente decisión';
+                if (selectedOption === null) score += 10;
+            } else if (option.result === 'medium') {
+                resultIcon.textContent  = '⚠️';
+                resultTitle.textContent = 'Puede funcionar, pero...';
+                if (selectedOption === null) score += 5;
+            } else {
+                resultIcon.textContent  = '❌';
+                resultTitle.textContent = 'Cuidado con esto';
+            }
+
+            resultText.textContent = option.feedback;
+
+            if (selectedOption === null) {
+                decisions++;
+                document.getElementById('decisions').textContent = decisions;
+            }
+
+            selectedOption = index;
+            document.getElementById('score').textContent = score;
+            document.getElementById('next-btn').disabled = false;
+        }
+
+        function nextScenario() {
+            currentScenario++;
+            renderScenario();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function previousScenario() {
+            if (currentScenario > 0) {
+                currentScenario--;
+                renderScenario();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function renderFinale() {
+            const container = document.getElementById('game-container');
+            const maxScore  = scenarios.length * 10;
+            const pct       = Math.round((score / maxScore) * 100);
+
+            document.getElementById('progress').style.width = '100%';
+            document.getElementById('stats-bar').classList.add('hidden');
+
+            let icon, title, subtitle;
+            if (pct >= 80) {
+                icon = '🏆'; title = '¡Agile Master!';
+                subtitle = 'Navegás las ceremonias con maestría. Tu equipo confía en vos.';
+            } else if (pct >= 60) {
+                icon = '⭐'; title = 'Scrum Master Sólido';
+                subtitle = 'Buenas decisiones en general. Seguí desarrollando tu intuición de equipo.';
+            } else {
+                icon = '📚'; title = 'En Camino';
+                subtitle = 'Las ceremonias ágiles tienen mucha profundidad. ¡Seguí practicando!';
+            }
+
+            container.innerHTML = `
+                <div class="scenario-card finale-card">
+                    <div class="finale-icon">${icon}</div>
+                    <h2 class="finale-title">${title}</h2>
+                    <p class="finale-subtitle">${subtitle}</p>
+                    <div class="score-display">${score}/${maxScore}</div>
+                    <p style="color: #94a3b8; margin-bottom: 30px;">Puntos obtenidos</p>
+                    <button class="nav-btn primary" onclick="restart()">🔄 Jugar de nuevo</button>
+                </div>
+            `;
+        }
+
+        function restart() {
+            currentScenario = 0;
+            score = 0;
+            decisions = 0;
+            document.getElementById('stats-bar').classList.remove('hidden');
+            document.getElementById('score').textContent = '0';
+            document.getElementById('decisions').textContent = '0';
+            renderScenario();
+        }
+
+        renderScenario();
+    </script>
+</body>
+</html>
