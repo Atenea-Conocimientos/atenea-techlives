@@ -605,8 +605,79 @@
                 ]
             },
 
-            // ── SPRINT REVIEW — (próximamente) ────────────────────────────
-            // Athenix: pegá los escenarios de Sprint Review acá ↓
+            // ── SPRINT REVIEW ──────────────────────────────────────────────
+            {
+                id: 10,
+                icon: "📊",
+                tag: "SPRINT REVIEW",
+                title: "La Demo que Explota",
+                description: "Estás en medio de la demo frente a 5 stakeholders cuando la feature principal tira un error 500. El silencio es sepulcral. ¿Cómo reaccionás?",
+                options: [
+                    {
+                        text: "Con calma: 'Parece que encontramos un edge case en vivo. Les muestro en el ambiente de staging mientras investigamos.'",
+                        result: "good",
+                        feedback: "Los stakeholders aprecian la transparencia y profesionalismo. La demo continúa y después resuelven el bug. Confianza intacta."
+                    },
+                    {
+                        text: "Culpás al entorno: 'Es un problema de infraestructura, en mi máquina funciona'",
+                        result: "risky",
+                        feedback: "Los stakeholders piensan: 'Si falla en la demo, ¿cómo estará en producción?'. Perdiste credibilidad."
+                    },
+                    {
+                        text: "Entrás en pánico y tratás de debuggear en vivo",
+                        result: "medium",
+                        feedback: "Pasaron 10 minutos incómodos viendo código. Los stakeholders perdieron interés y la review terminó sin feedback útil."
+                    }
+                ]
+            },
+            {
+                id: 11,
+                icon: "🤔",
+                tag: "SPRINT REVIEW",
+                title: "El Stakeholder Silencioso",
+                description: "Terminaste de mostrar 3 features nuevas. Preguntás por feedback y el stakeholder principal dice: 'Sí, está bien'. Sin más. Sabés que necesitás feedback real para iterar. ¿Qué hacés?",
+                options: [
+                    {
+                        text: "Hacés preguntas específicas: '¿El flujo de checkout les parece intuitivo? ¿Qué cambiarían del dashboard?'",
+                        result: "good",
+                        feedback: "El stakeholder empieza a opinar: 'Ahora que lo decís, el botón de pago podría ser más visible'. Obtuviste 5 mejoras concretas."
+                    },
+                    {
+                        text: "Aceptás el 'está bien' y cerrás la review",
+                        result: "medium",
+                        feedback: "Dos sprints después, el stakeholder dice que no era lo que esperaba. Sin feedback temprano, retrabajo garantizado."
+                    },
+                    {
+                        text: "Insistís: '¿Seguro que no tienen nada que agregar?'",
+                        result: "risky",
+                        feedback: "El stakeholder se molesta: 'Ya dije que está bien'. Se cierra más. Ahora ni las preguntas específicas funcionan."
+                    }
+                ]
+            },
+            {
+                id: 12,
+                icon: "🔄",
+                tag: "SPRINT REVIEW",
+                title: "El Cambio de Último Momento",
+                description: "El stakeholder ve la demo y dice: '¡Está genial, pero pueden cambiar todo el flujo para que sea como el de la competencia? Lo vi ayer y me encantó.' Son 3 sprints de trabajo. ¿Cómo respondés?",
+                options: [
+                    {
+                        text: "'Interesante. Agendemos una sesión para entender qué te gustó del competidor y evaluar el impacto.'",
+                        result: "good",
+                        feedback: "En la sesión descubren que solo necesitan 2 cambios pequeños, no rehacer todo. El stakeholder queda feliz y el equipo no sufre."
+                    },
+                    {
+                        text: "'No podemos, ya está desarrollado'",
+                        result: "medium",
+                        feedback: "Técnicamente correcto, pero el stakeholder siente que el equipo no es flexible. Empieza a micromanagear más."
+                    },
+                    {
+                        text: "'Dale, lo cambiamos' (sin medir impacto)",
+                        result: "risky",
+                        feedback: "El equipo descubre que implica rehacer el backend. 3 sprints perdidos, burnout del equipo, y el stakeholder después dice que tampoco era eso."
+                    }
+                ]
+            },
         ];
 
         // ── Engine ─────────────────────────────────────────────────────────
