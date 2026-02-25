@@ -685,6 +685,7 @@
         let score = 0;
         let decisions = 0;
         let selectedOption = null;
+        let currentOptions = [];
 
         document.getElementById('total-scenarios').textContent = scenarios.length;
 
@@ -695,7 +696,8 @@
         function renderScenario() {
             const container = document.getElementById('game-container');
             const raw = scenarios[currentScenario];
-            const scenario = raw ? { ...raw, options: shuffleArray(raw.options) } : raw;
+            currentOptions = raw ? shuffleArray(raw.options) : [];
+            const scenario = raw ? { ...raw, options: currentOptions } : raw;
 
             if (!scenario) { renderFinale(); return; }
 
@@ -747,7 +749,7 @@
         }
 
         function selectOption(index) {
-            const option = scenarios[currentScenario].options[index];
+            const option = currentOptions[index];
 
             document.querySelectorAll('.option-btn').forEach((btn, i) => {
                 btn.classList.toggle('selected', i === index);
