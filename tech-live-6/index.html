@@ -173,7 +173,7 @@
             width: 100%;
         }
 
-        .option-btn:hover {
+        .option-btn:hover:not(.locked) {
             background: rgba(6, 182, 212, 0.08);
             border-color: rgba(6, 182, 212, 0.45);
             transform: translateX(5px);
@@ -182,6 +182,60 @@
         .option-btn.selected {
             background: rgba(6, 182, 212, 0.15);
             border-color: #06B6D4;
+        }
+
+        .option-btn.locked {
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .option-btn.correct {
+            background: rgba(16, 185, 129, 0.15) !important;
+            border-color: #10b981 !important;
+        }
+
+        .option-btn.wrong {
+            background: rgba(239, 68, 68, 0.1) !important;
+            border-color: #ef4444 !important;
+        }
+
+        .option-btn.neutral {
+            background: rgba(245, 158, 11, 0.1) !important;
+            border-color: #f59e0b !important;
+        }
+
+        .option-feedback {
+            display: none;
+            margin-top: 10px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #cbd5e1;
+        }
+
+        .option-feedback.visible { display: block; }
+        .option-feedback.good  { background: rgba(16, 185, 129, 0.07); border-left: 3px solid #10b981; }
+        .option-feedback.medium{ background: rgba(245, 158, 11, 0.07); border-left: 3px solid #f59e0b; }
+        .option-feedback.risky { background: rgba(239, 68, 68, 0.07);  border-left: 3px solid #ef4444; }
+
+        /* Confetti */
+        .confetti-container {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none; z-index: 9999;
+            overflow: hidden;
+        }
+
+        .confetti-piece {
+            position: absolute;
+            top: -12px;
+            animation: confetti-fall linear forwards;
+        }
+
+        @keyframes confetti-fall {
+            0%   { transform: translateY(0) rotate(0deg);    opacity: 1; }
+            100% { transform: translateY(105vh) rotate(720deg); opacity: 0; }
         }
 
         .option-letter {
@@ -719,19 +773,17 @@
 
                     <div class="options-grid">
                         ${scenario.options.map((opt, i) => `
-                            <button class="option-btn" onclick="selectOption(${i})">
-                                <span class="option-letter">${String.fromCharCode(65 + i)}</span>
-                                <span class="option-text">${opt.text}</span>
-                            </button>
+                            <div>
+                                <button class="option-btn" id="opt-${i}" onclick="selectOption(${i})">
+                                    <span class="option-letter">${String.fromCharCode(65 + i)}</span>
+                                    <span class="option-text">${opt.text}</span>
+                                </button>
+                                <div class="option-feedback ${opt.result}" id="feedback-${i}">
+                                    ${opt.result === 'good' ? '✅ <strong>Excelente decisión:</strong>' : opt.result === 'medium' ? '⚠️ <strong>Puede funcionar, pero...</strong>' : '❌ <strong>Cuidado con esto:</strong>'}
+                                    ${opt.feedback}
+                                </div>
+                            </div>
                         `).join('')}
-                    </div>
-
-                    <div class="result-card" id="result-card">
-                        <div class="result-header">
-                            <span id="result-icon"></span>
-                            <span id="result-title"></span>
-                        </div>
-                        <p class="result-text" id="result-text"></p>
                     </div>
 
                     <div class="nav-buttons">
@@ -749,43 +801,58 @@
         }
 
         function selectOption(index) {
+            if (selectedOption !== null) return; // locked
+
             const option = currentOptions[index];
 
-            document.querySelectorAll('.option-btn').forEach((btn, i) => {
-                btn.classList.toggle('selected', i === index);
+            // Lock all buttons
+            document.querySelectorAll('.option-btn').forEach(btn => btn.classList.add('locked'));
+
+            // Style each button and reveal all feedbacks
+            currentOptions.forEach((opt, i) => {
+                const btn = document.getElementById('opt-' + i);
+                const fb  = document.getElementById('feedback-' + i);
+                if (opt.result === 'good')   btn.classList.add('correct');
+                else if (opt.result === 'medium') btn.classList.add('neutral');
+                else                              btn.classList.add('wrong');
+                if (i === index) btn.classList.add('selected');
+                fb.classList.add('visible');
             });
 
-            const resultCard  = document.getElementById('result-card');
-            const resultIcon  = document.getElementById('result-icon');
-            const resultTitle = document.getElementById('result-title');
-            const resultText  = document.getElementById('result-text');
-
-            resultCard.className = 'result-card ' + option.result;
-            resultCard.style.display = 'block';
-
+            // Score
             if (option.result === 'good') {
-                resultIcon.textContent  = '✅';
-                resultTitle.textContent = 'Excelente decisión';
-                if (selectedOption === null) score += 10;
+                score += 10;
+                launchConfetti();
             } else if (option.result === 'medium') {
-                resultIcon.textContent  = '⚠️';
-                resultTitle.textContent = 'Puede funcionar, pero...';
-                if (selectedOption === null) score += 5;
-            } else {
-                resultIcon.textContent  = '❌';
-                resultTitle.textContent = 'Cuidado con esto';
+                score += 5;
             }
 
-            resultText.textContent = option.feedback;
-
-            if (selectedOption === null) {
-                decisions++;
-                document.getElementById('decisions').textContent = decisions;
-            }
-
+            decisions++;
+            document.getElementById('decisions').textContent = decisions;
             selectedOption = index;
             document.getElementById('score').textContent = score;
             document.getElementById('next-btn').disabled = false;
+        }
+
+        function launchConfetti() {
+            const container = document.createElement('div');
+            container.className = 'confetti-container';
+            document.body.appendChild(container);
+            const colors = ['#06B6D4','#3B82F6','#10b981','#f59e0b','#ec4899','#8b5cf6','#fff'];
+            for (let i = 0; i < 70; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+                piece.style.left   = Math.random() * 100 + 'vw';
+                piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+                const size = Math.random() * 8 + 6;
+                piece.style.width  = size + 'px';
+                piece.style.height = size + 'px';
+                piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+                piece.style.animationDuration  = (Math.random() * 1.2 + 1.2) + 's';
+                piece.style.animationDelay     = (Math.random() * 0.6) + 's';
+                container.appendChild(piece);
+            }
+            setTimeout(() => container.remove(), 3500);
         }
 
         function nextScenario() {
