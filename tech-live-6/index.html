@@ -457,8 +457,82 @@
                 ]
             },
 
-            // ── SPRINT PLANNING — (próximamente) ──────────────────────────
-            // Athenix: pegá los escenarios de Sprint Planning acá ↓
+            // ── SPRINT PLANNING ────────────────────────────────────────────
+            {
+                id: 4,
+                icon: "📋",
+                tag: "SPRINT PLANNING",
+                title: "La Guerra del Scope",
+                description: "El Product Owner quiere meter 50 story points en el sprint. El equipo históricamente entrega 32. El PO insiste: 'Esta vez es diferente, el cliente lo necesita urgente'. ¿Cómo lo manejás?",
+                options: [
+                    {
+                        text: "Mostrás datos: 'Nuestra velocity promedio es 32. Prioricemos juntos qué entra en esos 32 puntos.'",
+                        result: "good",
+                        feedback: "El PO ve los números y acepta priorizar. Se comprometen 35 puntos y el sprint sale exitoso."
+                    },
+                    {
+                        text: "Aceptás los 50 puntos para no discutir",
+                        result: "risky",
+                        feedback: "A mitad de sprint el equipo está quemado. Entregan 28 puntos y el PO queda más frustrado que antes."
+                    },
+                    {
+                        text: "Te plantás: 'No, son 32 y punto'",
+                        result: "medium",
+                        feedback: "Ganaste la batalla pero perdiste la guerra. El PO siente que el equipo no es flexible y empieza a escalar a management."
+                    }
+                ]
+            },
+            {
+                id: 5,
+                icon: "🎯",
+                tag: "SPRINT PLANNING",
+                title: "La Estimación Fantasma",
+                description: "El equipo está estimando una historia y hay opiniones divididas: dos devs dicen 3 puntos, uno dice 8. Nadie quiere ceder. ¿Qué hacés?",
+                options: [
+                    {
+                        text: "Pedís que los extremos expliquen su razonamiento al equipo",
+                        result: "good",
+                        feedback: "El de 8 puntos revela un riesgo de integración que los otros no habían considerado. Acuerdan 5 puntos y agregan una spike técnica."
+                    },
+                    {
+                        text: "Hacés promedio: '(3+3+8)/3 = 4.6, ponemos 5'",
+                        result: "medium",
+                        feedback: "Salió rápido, pero no resolviste la incertidumbre real. A mitad del sprint descubren el problema que el dev de 8 puntos temía."
+                    },
+                    {
+                        text: "El tech lead decide: 'Yo digo que son 3, listo'",
+                        result: "risky",
+                        feedback: "El equipo se siente ignorado. Las próximas estimaciones las hacen desganados — total, el tech lead decide todo."
+                    }
+                ]
+            },
+            {
+                id: 6,
+                icon: "🆕",
+                tag: "SPRINT PLANNING",
+                title: "El Requisito Sorpresa",
+                description: "Ya terminaron de planificar cuando el PO dice: 'Ah, me olvidé, también necesitamos este feature urgente del CEO'. Son 13 puntos extra. ¿Cómo reaccionás?",
+                options: [
+                    {
+                        text: "'Podemos incluirlo, pero ¿qué sacamos del sprint para hacer espacio?'",
+                        result: "good",
+                        feedback: "El PO entiende el trade-off. Decide postergar 2 historias menos urgentes. El equipo respeta el proceso."
+                    },
+                    {
+                        text: "'Ya planificamos, lo vemos el próximo sprint'",
+                        result: "medium",
+                        feedback: "Protegiste el sprint, pero el PO tuvo que explicarle al CEO que hay que esperar 2 semanas. Quedó tenso."
+                    },
+                    {
+                        text: "'Bueno, lo agregamos y vemos cómo lo hacemos'",
+                        result: "risky",
+                        feedback: "Over-commitment garantizado. El equipo trabaja horas extra y aún así no llegan. La moral cae en picada."
+                    }
+                ]
+            },
+
+            // ── RETROSPECTIVA — (próximamente) ────────────────────────────
+            // Athenix: pegá los escenarios de Retrospectiva acá ↓
         ];
 
         // ── Engine ─────────────────────────────────────────────────────────
