@@ -446,17 +446,17 @@
                 description: "Es lunes 9:15 AM. El daily debería durar 15 minutos, pero Diego lleva 8 minutos explicando cada línea de código que tocó el viernes. El equipo empieza a mirar el reloj. Como Scrum Master, ¿qué hacés?",
                 options: [
                     {
-                        text: "Interrumpís amablemente: 'Diego, ¿podemos agendar una sesión después para los detalles técnicos?'",
+                        text: "Lo interrumpís con tacto y le proponés continuar los detalles técnicos en un espacio aparte",
                         result: "good",
                         feedback: "Perfecto. Respetaste el timebox sin humillar a Diego. El daily vuelve a fluir y el equipo te lo agradece."
                     },
                     {
-                        text: "Dejás que termine para no ser grosero",
+                        text: "Dejás que termine su explicación para no cortar el flujo del equipo",
                         result: "risky",
                         feedback: "El daily se extendió a 35 minutos. Dos personas tenían reuniones y se fueron frustradas. El equipo empieza a odiar los dailies."
                     },
                     {
-                        text: "Le cortás en seco: 'Diego, next.'",
+                        text: "Lo cortás en medio de la explicación para mantener el timebox del daily",
                         result: "medium",
                         feedback: "Cumpliste el timebox, pero Diego se sintió avergonzado frente al equipo. La próxima vez no va a querer compartir sus bloqueos."
                     }
@@ -470,17 +470,17 @@
                 description: "Lucía dice 'Todo bien, sigo con lo mismo de ayer'. Pero notás que lleva 3 días en la misma tarea y evita dar detalles. ¿Cómo manejás la situación?",
                 options: [
                     {
-                        text: "Después del daily, te acercás en privado: '¿Lucía, necesitás una mano con algo?'",
+                        text: "Al terminar el daily, te acercás en privado a ver si necesita apoyo con algo",
                         result: "good",
                         feedback: "Lucía confiesa que está trabada con una API externa y no sabía cómo pedir ayuda. Resuelven juntos en 30 min lo que hubiera tardado 2 días más."
                     },
                     {
-                        text: "La exponés en el daily: '¿Por qué llevás 3 días en eso?'",
+                        text: "En el daily preguntás frente al equipo por qué lleva tanto tiempo en esa tarea",
                         result: "risky",
                         feedback: "Lucía se pone a la defensiva. El resto del equipo toma nota: mejor no mostrar vulnerabilidad en este equipo."
                     },
                     {
-                        text: "No decís nada, ya lo resolverá sola",
+                        text: "No intervenís y esperás a que ella misma levante el bloqueo cuando esté lista",
                         result: "medium",
                         feedback: "Al final del sprint, la tarea sigue sin terminar. El compromiso del equipo se ve afectado."
                     }
@@ -494,17 +494,17 @@
                 description: "Notás que Martín siempre está mirando el celular durante el daily y nunca presta atención a lo que dicen los demás. Solo habla cuando es su turno. ¿Qué hacés?",
                 options: [
                     {
-                        text: "Implementás 'standing daily' — todos parados, celulares en la mesa",
+                        text: "Proponés al equipo un acuerdo de foco: daily de pie, teléfonos boca abajo en la mesa",
                         result: "good",
                         feedback: "El daily se vuelve más dinámico y corto. Martín empieza a escuchar y hasta ofrece ayuda a un compañero."
                     },
                     {
-                        text: "Lo llamás al frente del equipo: '¿Martín, algo más interesante en el celu?'",
+                        text: "Lo señalás delante del grupo para que tome conciencia de su comportamiento",
                         result: "risky",
                         feedback: "Generaste tensión innecesaria. Martín está resentido y el ambiente del daily se puso incómodo."
                     },
                     {
-                        text: "Lo ignorás, cada uno con sus hábitos",
+                        text: "Decidís no intervenir, cada persona gestiona su atención como quiere",
                         result: "medium",
                         feedback: "Otros empiezan a copiar la conducta. Ahora nadie escucha a nadie y el daily perdió su propósito de sincronización."
                     }
@@ -520,17 +520,17 @@
                 description: "El Product Owner quiere meter 50 story points en el sprint. El equipo históricamente entrega 32. El PO insiste: 'Esta vez es diferente, el cliente lo necesita urgente'. ¿Cómo lo manejás?",
                 options: [
                     {
-                        text: "Mostrás datos: 'Nuestra velocity promedio es 32. Prioricemos juntos qué entra en esos 32 puntos.'",
+                        text: "Mostrás la velocity histórica y negociás con el PO qué priorizar dentro de la capacidad real",
                         result: "good",
                         feedback: "El PO ve los números y acepta priorizar. Se comprometen 35 puntos y el sprint sale exitoso."
                     },
                     {
-                        text: "Aceptás los 50 puntos para no discutir",
+                        text: "Aceptás el compromiso confiando en que el equipo puede dar un poco más esta vez",
                         result: "risky",
                         feedback: "A mitad de sprint el equipo está quemado. Entregan 28 puntos y el PO queda más frustrado que antes."
                     },
                     {
-                        text: "Te plantás: 'No, son 32 y punto'",
+                        text: "Cerrás la discusión: la capacity es 32 puntos y no hay margen para negociar",
                         result: "medium",
                         feedback: "Ganaste la batalla pero perdiste la guerra. El PO siente que el equipo no es flexible y empieza a escalar a management."
                     }
@@ -544,17 +544,17 @@
                 description: "El equipo está estimando una historia y hay opiniones divididas: dos devs dicen 3 puntos, uno dice 8. Nadie quiere ceder. ¿Qué hacés?",
                 options: [
                     {
-                        text: "Pedís que los extremos expliquen su razonamiento al equipo",
+                        text: "Pedís que quien estimó más alto y quien estimó más bajo expliquen su razonamiento",
                         result: "good",
                         feedback: "El de 8 puntos revela un riesgo de integración que los otros no habían considerado. Acuerdan 5 puntos y agregan una spike técnica."
                     },
                     {
-                        text: "Hacés promedio: '(3+3+8)/3 = 4.6, ponemos 5'",
+                        text: "Calculás el promedio de las tres estimaciones y lo usás como valor final",
                         result: "medium",
                         feedback: "Salió rápido, pero no resolviste la incertidumbre real. A mitad del sprint descubren el problema que el dev de 8 puntos temía."
                     },
                     {
-                        text: "El tech lead decide: 'Yo digo que son 3, listo'",
+                        text: "Dejás que el tech lead tome la decisión final para desbloquear la discusión",
                         result: "risky",
                         feedback: "El equipo se siente ignorado. Las próximas estimaciones las hacen desganados — total, el tech lead decide todo."
                     }
@@ -568,17 +568,17 @@
                 description: "Ya terminaron de planificar cuando el PO dice: 'Ah, me olvidé, también necesitamos este feature urgente del CEO'. Son 13 puntos extra. ¿Cómo reaccionás?",
                 options: [
                     {
-                        text: "'Podemos incluirlo, pero ¿qué sacamos del sprint para hacer espacio?'",
+                        text: "Le preguntás al PO qué estaría dispuesto a sacar del sprint para darle lugar al nuevo ítem",
                         result: "good",
                         feedback: "El PO entiende el trade-off. Decide postergar 2 historias menos urgentes. El equipo respeta el proceso."
                     },
                     {
-                        text: "'Ya planificamos, lo vemos el próximo sprint'",
+                        text: "Le explicás que el planning ya cerró y que el ítem entra en la próxima iteración",
                         result: "medium",
                         feedback: "Protegiste el sprint, pero el PO tuvo que explicarle al CEO que hay que esperar 2 semanas. Quedó tenso."
                     },
                     {
-                        text: "'Bueno, lo agregamos y vemos cómo lo hacemos'",
+                        text: "Aceptás agregarlo y confiás en que el equipo encontrará la manera de absorberlo",
                         result: "risky",
                         feedback: "Over-commitment garantizado. El equipo trabaja horas extra y aún así no llegan. La moral cae en picada."
                     }
@@ -594,17 +594,17 @@
                 description: "Preguntás '¿Qué podríamos mejorar?' y nadie dice nada. Pasan 30 segundos eternos. Sabés que hubo problemas en el sprint, pero nadie quiere hablar. ¿Qué hacés?",
                 options: [
                     {
-                        text: "Usás una técnica anónima: post-its o Miro donde cada uno escribe sin identificarse",
+                        text: "Proponés escribir en post-its o Miro de forma anónima antes de abrir la discusión grupal",
                         result: "good",
                         feedback: "Aparecen 12 post-its con feedback real. Sin la presión de hablar en público, el equipo se abre. Descubrís que hay tensión entre dos devs."
                     },
                     {
-                        text: "Empezás vos: 'Yo creo que el deploy del jueves fue un desastre...'",
+                        text: "Abrís vos con algo negativo del sprint para que los demás se sientan cómodos de seguir",
                         result: "medium",
                         feedback: "Rompiste el hielo, pero ahora todos siguen tu tema. Otros problemas importantes quedaron sin discutir."
                     },
                     {
-                        text: "Cerrás la retro: 'Bueno, si no hay nada, seguimos igual'",
+                        text: "Interpretás el silencio como señal de que el sprint fue bien y dás la retro por terminada",
                         result: "risky",
                         feedback: "Los problemas no desaparecen por ignorarlos. El próximo sprint tendrás los mismos issues... o peores."
                     }
@@ -618,17 +618,17 @@
                 description: "Carlos usa la retro para quejarse de lo mismo de siempre: 'Los requisitos nunca están claros'. Es la quinta retro consecutiva con el mismo tema, pero nada cambia. ¿Cómo lo manejás?",
                 options: [
                     {
-                        text: "'Carlos, definamos una acción concreta: ¿qué experimento podemos hacer este sprint para mejorar esto?'",
+                        text: "Reconocés el problema y proponés definir juntos una acción concreta y medible para este sprint",
                         result: "good",
                         feedback: "Acuerdan que el PO agregará criterios de aceptación antes del refinement. Carlos se siente escuchado Y hay un plan de acción."
                     },
                     {
-                        text: "'Ya lo discutimos 5 veces, pasemos a otro tema'",
+                        text: "Le recordás que ya lo discutieron varias veces y redirigís la conversación hacia otro tema",
                         result: "risky",
                         feedback: "Carlos se cierra. El resto del equipo piensa: '¿Para qué hablar si no sirve de nada?'. Las próximas retros serán más silenciosas."
                     },
                     {
-                        text: "Lo dejás desahogarse 15 minutos y seguís con la agenda",
+                        text: "Le das espacio para que se exprese y luego continuás con el resto de los puntos de la agenda",
                         result: "medium",
                         feedback: "Carlos se siente escuchado pero nada cambia. La queja volverá el próximo sprint. El equipo pierde fe en las retros."
                     }
@@ -642,17 +642,17 @@
                 description: "Todos saben que el problema del sprint fue Juan, el dev senior que no entregó su parte a tiempo. Pero nadie lo dice porque le tienen respeto (o miedo). ¿Cómo abordás el tema?",
                 options: [
                     {
-                        text: "Hablás con Juan en privado antes de la retro: '¿Pasó algo este sprint? ¿Necesitás apoyo?'",
+                        text: "Antes de la retro, hablás con Juan en privado para entender qué pasó y si necesita apoyo",
                         result: "good",
                         feedback: "Juan confiesa que está sobrecargado con 3 proyectos. En la retro, él mismo propone redistribuir carga. El equipo lo respeta más."
                     },
                     {
-                        text: "Lo exponés en la retro: 'El problema fue que Juan no entregó a tiempo'",
+                        text: "En la retro nombrás directamente a Juan como la causa principal de los problemas del sprint",
                         result: "risky",
                         feedback: "Juan se pone a la defensiva y culpa a otros. La retro se convierte en un juicio público. La confianza del equipo se rompe."
                     },
                     {
-                        text: "Abordás el síntoma sin nombrar a nadie: 'Tuvimos dependencias bloqueantes...'",
+                        text: "Planteás el tema en general, hablando de dependencias bloqueantes sin identificar a nadie",
                         result: "medium",
                         feedback: "Todos saben de quién hablás pero nadie lo dice. El problema real no se resuelve y volverá."
                     }
@@ -668,17 +668,17 @@
                 description: "Estás en medio de la demo frente a 5 stakeholders cuando la feature principal tira un error 500. El silencio es sepulcral. ¿Cómo reaccionás?",
                 options: [
                     {
-                        text: "Con calma: 'Parece que encontramos un edge case en vivo. Les muestro en el ambiente de staging mientras investigamos.'",
+                        text: "Con calma, reconocés el error en vivo y proponés continuar mostrando el resto en staging",
                         result: "good",
                         feedback: "Los stakeholders aprecian la transparencia y profesionalismo. La demo continúa y después resuelven el bug. Confianza intacta."
                     },
                     {
-                        text: "Culpás al entorno: 'Es un problema de infraestructura, en mi máquina funciona'",
+                        text: "Atribuís el error a un problema de infraestructura y aclarás que en tu máquina funciona bien",
                         result: "risky",
                         feedback: "Los stakeholders piensan: 'Si falla en la demo, ¿cómo estará en producción?'. Perdiste credibilidad."
                     },
                     {
-                        text: "Entrás en pánico y tratás de debuggear en vivo",
+                        text: "Pausás la demo e intentás resolver el error en vivo frente a todos los stakeholders",
                         result: "medium",
                         feedback: "Pasaron 10 minutos incómodos viendo código. Los stakeholders perdieron interés y la review terminó sin feedback útil."
                     }
@@ -692,17 +692,17 @@
                 description: "Terminaste de mostrar 3 features nuevas. Preguntás por feedback y el stakeholder principal dice: 'Sí, está bien'. Sin más. Sabés que necesitás feedback real para iterar. ¿Qué hacés?",
                 options: [
                     {
-                        text: "Hacés preguntas específicas: '¿El flujo de checkout les parece intuitivo? ¿Qué cambiarían del dashboard?'",
+                        text: "Hacés preguntas concretas sobre cada feature para forzar un feedback más específico y accionable",
                         result: "good",
                         feedback: "El stakeholder empieza a opinar: 'Ahora que lo decís, el botón de pago podría ser más visible'. Obtuviste 5 mejoras concretas."
                     },
                     {
-                        text: "Aceptás el 'está bien' y cerrás la review",
+                        text: "Tomás el 'está bien' como validación positiva y cerrás la review con ese resultado",
                         result: "medium",
                         feedback: "Dos sprints después, el stakeholder dice que no era lo que esperaba. Sin feedback temprano, retrabajo garantizado."
                     },
                     {
-                        text: "Insistís: '¿Seguro que no tienen nada que agregar?'",
+                        text: "Seguís preguntando si están seguros hasta conseguir que compartan algo más sobre lo visto",
                         result: "risky",
                         feedback: "El stakeholder se molesta: 'Ya dije que está bien'. Se cierra más. Ahora ni las preguntas específicas funcionan."
                     }
@@ -716,17 +716,17 @@
                 description: "El stakeholder ve la demo y dice: '¡Está genial, pero pueden cambiar todo el flujo para que sea como el de la competencia? Lo vi ayer y me encantó.' Son 3 sprints de trabajo. ¿Cómo respondés?",
                 options: [
                     {
-                        text: "'Interesante. Agendemos una sesión para entender qué te gustó del competidor y evaluar el impacto.'",
+                        text: "Proponés una sesión aparte para entender bien el pedido y evaluar el impacto antes de comprometerse",
                         result: "good",
                         feedback: "En la sesión descubren que solo necesitan 2 cambios pequeños, no rehacer todo. El stakeholder queda feliz y el equipo no sufre."
                     },
                     {
-                        text: "'No podemos, ya está desarrollado'",
+                        text: "Le explicás que el desarrollo ya está hecho y que no es viable el cambio en este punto",
                         result: "medium",
                         feedback: "Técnicamente correcto, pero el stakeholder siente que el equipo no es flexible. Empieza a micromanagear más."
                     },
                     {
-                        text: "'Dale, lo cambiamos' (sin medir impacto)",
+                        text: "Aceptás el cambio en el momento sin evaluar ni comunicar el impacto real al equipo",
                         result: "risky",
                         feedback: "El equipo descubre que implica rehacer el backend. 3 sprints perdidos, burnout del equipo, y el stakeholder después dice que tampoco era eso."
                     }
