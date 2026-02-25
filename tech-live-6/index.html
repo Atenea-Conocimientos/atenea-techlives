@@ -688,9 +688,14 @@
 
         document.getElementById('total-scenarios').textContent = scenarios.length;
 
+        function shuffleArray(arr) {
+            return [...arr].sort(() => Math.random() - 0.5);
+        }
+
         function renderScenario() {
             const container = document.getElementById('game-container');
-            const scenario = scenarios[currentScenario];
+            const raw = scenarios[currentScenario];
+            const scenario = raw ? { ...raw, options: shuffleArray(raw.options) } : raw;
 
             if (!scenario) { renderFinale(); return; }
 
