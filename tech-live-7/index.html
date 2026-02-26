@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tech Live #7 - IA & Automation Best Practices</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #0f0f1a 100%);
+      min-height: 100vh;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      background: linear-gradient(90deg, #8B5CF6, #06B6D4, #10B981);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    .header .subtitle {
+      color: #9CA3AF;
+      font-size: 1.1rem;
+    }
+
+    .round-badge {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+      font-weight: 600;
+      font-size: 0.875rem;
+      margin-bottom: 1rem;
+    }
+
+    .round-ia { background: linear-gradient(90deg, #8B5CF6, #A855F7); }
+    .round-automation { background: linear-gradient(90deg, #06B6D4, #10B981); }
+
+    .scenario-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 1rem;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .scenario-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .scenario-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: #F3F4F6;
+    }
+
+    .scenario-description {
+      color: #D1D5DB;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .code-block {
+      background: #1a1a2e;
+      border: 1px solid #374151;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      font-family: 'Monaco', 'Menlo', monospace;
+      font-size: 0.875rem;
+      overflow-x: auto;
+      margin-bottom: 1.5rem;
+      color: #E5E7EB;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .option-btn {
+      padding: 1rem 1.5rem;
+      border: 2px solid rgba(139, 92, 246, 0.3);
+      border-radius: 0.75rem;
+      background: rgba(139, 92, 246, 0.1);
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: left;
+    }
+
+    .option-btn:hover {
+      border-color: #8B5CF6;
+      background: rgba(139, 92, 246, 0.2);
+      transform: translateX(5px);
+    }
+
+    .option-btn.correct {
+      border-color: #10B981;
+      background: rgba(16, 185, 129, 0.2);
+    }
+
+    .option-btn.incorrect {
+      border-color: #EF4444;
+      background: rgba(239, 68, 68, 0.2);
+    }
+
+    .feedback {
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-top: 1rem;
+      display: none;
+    }
+
+    .feedback.show { display: block; }
+    .feedback.good { background: rgba(16, 185, 129, 0.2); border: 1px solid #10B981; }
+    .feedback.bad { background: rgba(239, 68, 68, 0.2); border: 1px solid #EF4444; }
+
+    .progress-bar {
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+      margin-bottom: 2rem;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #8B5CF6, #06B6D4);
+      transition: width 0.5s ease;
+    }
+
+    .score-display {
+      text-align: center;
+      font-size: 1.25rem;
+      color: #9CA3AF;
+      margin-bottom: 1rem;
+    }
+
+    .score-display span {
+      color: #8B5CF6;
+      font-weight: 700;
+    }
+
+    .start-screen, .end-screen {
+      text-align: center;
+      padding: 3rem;
+    }
+
+    .start-btn {
+      padding: 1rem 3rem;
+      font-size: 1.25rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 9999px;
+      background: linear-gradient(90deg, #8B5CF6, #06B6D4);
+      color: white;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .start-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
+    }
+
+    .hidden { display: none; }
+
+    @media (max-width: 640px) {
+      .header h1 { font-size: 1.75rem; }
+      .scenario-card { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🤖 IA & Automation Challenge ⚙️</h1>
+      <p class="subtitle">Tech Live #7 - Atenea Conocimientos</p>
+    </div>
+
+    <!-- Start Screen -->
+    <div id="start-screen" class="start-screen">
+      <div class="scenario-card">
+        <div class="scenario-icon">🎮</div>
+        <h2 class="scenario-title">¡Bienvenido al Challenge!</h2>
+        <p class="scenario-description">
+          Dos rondas, decisiones reales:<br><br>
+          🤖 <strong>Ronda 1 - IA:</strong> ¿Cuándo usar IA vs hacer manual?<br>
+          ⚙️ <strong>Ronda 2 - Code Smells:</strong> Detectá los anti-patterns en tests automatizados<br><br>
+          ¿Estás listo para demostrar tu expertise?
+        </p>
+        <button class="start-btn" onclick="startGame()">🚀 Comenzar</button>
+      </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="game-screen" class="hidden">
+      <div class="score-display">Puntos: <span id="score">0</span> / <span id="max-score">0</span></div>
+      <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+      <div id="scenario-container"></div>
+    </div>
+
+    <!-- End Screen -->
+    <div id="end-screen" class="hidden end-screen">
+      <div class="scenario-card">
+        <div class="scenario-icon">🏆</div>
+        <h2 class="scenario-title">¡Challenge Completado!</h2>
+        <p class="scenario-description" id="final-message"></p>
+        <button class="start-btn" onclick="restartGame()">🔄 Jugar de nuevo</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const scenarios = [
+      // === RONDA 1: IA ===
+      {
+        round: 'ia',
+        icon: '🤖',
+        tag: 'RONDA IA',
+        title: 'Generación de Test Data',
+        description: 'Necesitás crear 500 registros de usuarios de prueba con datos realistas (nombres, emails, direcciones) para testing de performance. ¿Qué enfoque tomás?',
+        options: [
+          { text: '🤖 Usar IA (ChatGPT/Copilot) para generar los datos', result: 'good', feedback: '✅ Correcto! La IA es perfecta para generar datos de prueba variados y realistas. Es más rápido que escribirlo manual y los datos son más diversos que usar un solo patrón.' },
+          { text: '📝 Escribir un script manual con Faker.js', result: 'medium', feedback: '⚠️ Funciona, pero tardás más. Faker es bueno pero la IA puede darte variaciones más creativas y edge cases que no pensarías.' },
+          { text: '📋 Copiar datos de producción (anonimizados)', result: 'risky', feedback: '❌ Riesgoso! Aunque anonimices, podés filtrar datos sensibles. Además dependés de tener acceso a prod.' }
+        ]
+      },
+      {
+        round: 'ia',
+        icon: '🔍',
+        tag: 'RONDA IA',
+        title: 'Análisis de Logs de Error',
+        description: 'Tenés 10,000 líneas de logs de un error en producción que ocurre esporádicamente. Necesitás encontrar el patrón. ¿Cómo lo abordás?',
+        options: [
+          { text: '👁️ Revisar manualmente buscando patrones', result: 'risky', feedback: '❌ Con 10K líneas te vas a perder patrones sutiles y te va a llevar horas. No escala.' },
+          { text: '🤖 Pasar los logs a una IA para que identifique patrones', result: 'good', feedback: '✅ Perfecto! La IA puede procesar miles de líneas y encontrar correlaciones que el ojo humano pierde. Ideal para análisis exploratorio.' },
+          { text: '📊 Escribir regex y scripts de parsing', result: 'medium', feedback: '⚠️ Funciona si ya sabés qué buscar. Pero si no conocés el patrón, la IA te ayuda a descubrirlo primero.' }
+        ]
+      },
+      {
+        round: 'ia',
+        icon: '✍️',
+        tag: 'RONDA IA',
+        title: 'Escribir Casos de Prueba Críticos',
+        description: 'Tenés que escribir los test cases para el módulo de pagos - es crítico para el negocio y cualquier bug puede costar miles de dólares. ¿Qué hacés?',
+        options: [
+          { text: '🤖 Dejar que la IA genere todos los test cases', result: 'risky', feedback: '❌ Peligroso! La IA puede omitir edge cases específicos del dominio o generar casos que "suenan bien" pero no cubren riesgos reales.' },
+          { text: '🧠 Escribirlos manualmente con tu conocimiento del dominio', result: 'good', feedback: '✅ Correcto! Para casos críticos, tu conocimiento del negocio y los riesgos es insustituible. La IA no conoce el contexto de tu empresa.' },
+          { text: '🤝 Usar IA como asistente, pero revisar y agregar casos propios', result: 'good', feedback: '✅ También válido! La IA puede darte una base, pero vos agregás el conocimiento de dominio y edge cases específicos.' }
+        ]
+      },
+      // === RONDA 2: CODE SMELLS ===
+      {
+        round: 'automation',
+        icon: '🔴',
+        tag: 'CODE SMELLS',
+        title: 'El Test Gigante',
+        description: 'Encontrás este test en el repo. ¿Cuál es el problema principal?',
+        code: `test('user flow', async () => {
+  await login('user@test.com', 'pass123');
+  await navigateToDashboard();
+  await clickOnProfile();
+  await updateName('John');
+  await updateEmail('john@test.com');
+  await saveProfile();
+  await logout();
+  await login('john@test.com', 'pass123');
+  await verifyNameIs('John');
+  await addToCart('Product A');
+  await addToCart('Product B');
+  await checkout();
+  await verifyOrderCreated();
+});`,
+        options: [
+          { text: '🔴 Hace demasiadas cosas - debería ser varios tests', result: 'good', feedback: '✅ Exacto! Este test viola el principio de Single Responsibility. Si falla, no sabés qué parte falló. Dividilo en: test de profile, test de login con nuevo email, test de checkout.' },
+          { text: '🟡 Le faltan assertions intermedias', result: 'medium', feedback: '⚠️ Es un problema, pero no el principal. El test entero debería dividirse, no solo agregar más assertions.' },
+          { text: '🟢 Está bien, cubre el flujo completo', result: 'risky', feedback: '❌ Este es el "God Test" anti-pattern. Un test debe probar UNA cosa. Si falla en checkout, ¿es problema del checkout o de algo anterior?' }
+        ]
+      },
+      {
+        round: 'automation',
+        icon: '⏰',
+        tag: 'CODE SMELLS',
+        title: 'Sleep Everywhere',
+        description: '¿Qué problema tiene este código?',
+        code: `async function testCheckout() {
+  await page.click('#add-to-cart');
+  await page.waitForTimeout(2000);
+  await page.click('#checkout-btn');
+  await page.waitForTimeout(3000);
+  await page.fill('#card-number', '4111111111111111');
+  await page.waitForTimeout(1000);
+  await page.click('#pay-btn');
+  await page.waitForTimeout(5000);
+  expect(await page.locator('.success').isVisible()).toBe(true);
+}`,
+        options: [
+          { text: '⏰ Los waitForTimeout son flaky - usar waitFor con condiciones', result: 'good', feedback: '✅ Correcto! Los sleeps fijos son el #1 cause de tests flaky. Usá waitForSelector, waitForResponse, o expect con timeout. El test espera 11 segundos innecesariamente si todo anda rápido!' },
+          { text: '🔢 El número de tarjeta está hardcodeado', result: 'medium', feedback: '⚠️ Es un problema menor (debería estar en un archivo de test data), pero los sleeps son el problema crítico.' },
+          { text: '📝 Falta el paso de llenar dirección', result: 'risky', feedback: '❌ Puede ser, pero no es un code smell. El problema grave son los 11 segundos de waits que hacen el test lento y flaky.' }
+        ]
+      },
+      {
+        round: 'automation',
+        icon: '🔗',
+        tag: 'CODE SMELLS',
+        title: 'Dependencia Entre Tests',
+        description: '¿Qué problema tiene esta suite?',
+        code: `describe('User Management', () => {
+  test('1. create user', async () => {
+    const user = await createUser('test@mail.com');
+    global.createdUserId = user.id; // guardamos para después
+  });
+
+  test('2. update user', async () => {
+    await updateUser(global.createdUserId, { name: 'Updated' });
+  });
+
+  test('3. delete user', async () => {
+    await deleteUser(global.createdUserId);
+  });
+});`,
+        options: [
+          { text: '🔗 Los tests dependen entre sí - si uno falla, fallan todos', result: 'good', feedback: '✅ Exacto! Cada test debe ser independiente. Si "create user" falla, los otros 2 fallan por la razón equivocada. Usá beforeEach para setup y afterEach para cleanup.' },
+          { text: '📝 Usar global es mala práctica en JS', result: 'medium', feedback: '⚠️ Es verdad que global es feo, pero el problema real es la dependencia entre tests. Aunque uses otra variable, el acoplamiento sigue.' },
+          { text: '🟢 Está bien, es un flujo CRUD lógico', result: 'risky', feedback: '❌ Este es el "Chained Tests" anti-pattern. ¿Qué pasa si querés correr solo el test de delete? ¿O si paralelizás la suite? Todo se rompe.' }
+        ]
+      }
+    ];
+
+    let currentScenario = 0;
+    let score = 0;
+    let answered = false;
+
+    function startGame() {
+      document.getElementById('start-screen').classList.add('hidden');
+      document.getElementById('game-screen').classList.remove('hidden');
+      document.getElementById('max-score').textContent = scenarios.length * 10;
+      renderScenario();
+    }
+
+    function renderScenario() {
+      const scenario = scenarios[currentScenario];
+      const container = document.getElementById('scenario-container');
+      const progress = ((currentScenario) / scenarios.length) * 100;
+      document.getElementById('progress').style.width = progress + '%';
+      answered = false;
+
+      const roundClass = scenario.round === 'ia' ? 'round-ia' : 'round-automation';
+      
+      let codeHtml = '';
+      if (scenario.code) {
+        codeHtml = `<pre class="code-block"><code>${escapeHtml(scenario.code)}</code></pre>`;
+      }
+
+      container.innerHTML = `
+        <div class="scenario-card">
+          <span class="round-badge ${roundClass}">${scenario.tag}</span>
+          <div class="scenario-icon">${scenario.icon}</div>
+          <h2 class="scenario-title">${scenario.title}</h2>
+          <p class="scenario-description">${scenario.description}</p>
+          ${codeHtml}
+          <div class="options">
+            ${scenario.options.map((opt, i) => `
+              <button class="option-btn" onclick="selectOption(${i})">${opt.text}</button>
+            `).join('')}
+          </div>
+          <div class="feedback" id="feedback"></div>
+        </div>
+      `;
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function selectOption(index) {
+      if (answered) return;
+      answered = true;
+
+      const scenario = scenarios[currentScenario];
+      const option = scenario.options[index];
+      const buttons = document.querySelectorAll('.option-btn');
+      const feedback = document.getElementById('feedback');
+
+      buttons.forEach((btn, i) => {
+        if (i === index) {
+          btn.classList.add(option.result === 'good' ? 'correct' : 'incorrect');
+        }
+        btn.style.pointerEvents = 'none';
+      });
+
+      if (option.result === 'good') {
+        score += 10;
+      } else if (option.result === 'medium') {
+        score += 5;
+      }
+
+      document.getElementById('score').textContent = score;
+
+      feedback.innerHTML = option.feedback;
+      feedback.className = 'feedback show ' + (option.result === 'good' ? 'good' : 'bad');
+
+      setTimeout(() => {
+        currentScenario++;
+        if (currentScenario < scenarios.length) {
+          renderScenario();
+        } else {
+          showEndScreen();
+        }
+      }, 3500);
+    }
+
+    function showEndScreen() {
+      document.getElementById('game-screen').classList.add('hidden');
+      document.getElementById('end-screen').classList.remove('hidden');
+      
+      const maxScore = scenarios.length * 10;
+      const percentage = Math.round((score / maxScore) * 100);
+      
+      let message = '';
+      if (percentage >= 90) {
+        message = `🏆 ¡Increíble! ${score}/${maxScore} puntos (${percentage}%)<br><br>Sos un experto en IA y Automation. ¡Seguí así!`;
+      } else if (percentage >= 70) {
+        message = `🎯 ¡Muy bien! ${score}/${maxScore} puntos (${percentage}%)<br><br>Tenés buen criterio. Algunos detalles para pulir.`;
+      } else if (percentage >= 50) {
+        message = `📚 ${score}/${maxScore} puntos (${percentage}%)<br><br>Vas por buen camino. ¡Seguí aprendiendo!`;
+      } else {
+        message = `💪 ${score}/${maxScore} puntos (${percentage}%)<br><br>Hay mucho por aprender, ¡pero para eso estamos!`;
+      }
+      
+      document.getElementById('final-message').innerHTML = message;
+    }
+
+    function restartGame() {
+      currentScenario = 0;
+      score = 0;
+      document.getElementById('end-screen').classList.add('hidden');
+      document.getElementById('start-screen').classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>
